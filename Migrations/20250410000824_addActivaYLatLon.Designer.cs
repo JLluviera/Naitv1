@@ -96,4 +96,3 @@ namespace Naitv1.Migrations
 #pragma warning restore 612, 618
         }
     }
-}
