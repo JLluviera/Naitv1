@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Naitv1.Data;
 using Naitv1.Helpers;
 using Naitv1.Models;
@@ -13,9 +14,12 @@ namespace Naitv1.Controllers
     {
         private readonly AppDbContext _context;
 
+        private readonly PlanificadorNotificaciones planificadorNotificaciones;
         public AdminController(AppDbContext context)
         {
             _context = context;
+            planificadorNotificaciones = PlanificadorNotificaciones.ObtenerInstancia(context);
+
         }
 
         public IActionResult Index()
@@ -74,8 +78,14 @@ namespace Naitv1.Controllers
             notificacion.FechaHoraProgramada = fechaProgramadaNotificacion;
             notificacion.EstadoNotificacion = "pendiente";
 
-            _context.Notificaciones.Add(notificacion);
-            _context.SaveChanges();
+
+            if(planificadorNotificaciones.CrearRegistro(notificacion) == false)
+            {
+                ViewBag.Planilla.AsuntoTemplate = tituloNotificacion;
+                ViewBag.Planilla.CuerpoTemplate = mensajeNotificacion;
+                ViewBag.Error = "No se pudo crear la notificacion";
+                return View("Notifiaciones/Crear");
+            };
 
             return RedirectToAction("Index", "Home");
         }
