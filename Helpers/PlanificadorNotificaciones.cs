@@ -30,5 +30,24 @@ namespace Naitv1.Helpers
 
             return true;
         }
+
+        public string CrearRegistroPostEvento(int Id, DateTime fechaHora)
+        {
+            Actividad? actividad = _context.Actividades.Find(Id);
+
+            if (actividad == null)
+            {
+                return "Actividad no encontrada"; 
+            }
+
+            Notificaciones notificacion = new Notificaciones
+            {
+                Titulo = "Para que no te olvides esa noche especial",
+                Mensaje = "Mira el seguimiento de la actividad",
+                FechaHoraProgramada = fechaHora,
+                CriterioSegmento = Notificaciones.CrearCriterio(new List<int> { actividad.CiudadId }, new List<string> { actividad.TipoActividad }),
+                EstadoNotificacion = "Pendiente"
+            }
+        }
     }
 }
