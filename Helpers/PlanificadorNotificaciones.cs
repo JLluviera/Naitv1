@@ -23,7 +23,7 @@ namespace Naitv1.Helpers
             return unicaInstancia;
         }
 
-        public bool CrearRegisto(Notificaciones notificacion)
+        public bool CrearRegistro(Notificaciones notificacion)
         {
             _context.Notificaciones.Add(notificacion);
             _context.SaveChanges();
