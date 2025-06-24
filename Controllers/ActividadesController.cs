@@ -2,6 +2,7 @@
 using Naitv1.Models;
 using Naitv1.Data;
 using Naitv1.Helpers;
+using System.Net.Http.Json;
 
 namespace Naitv1.Controllers
 {
@@ -18,6 +19,17 @@ namespace Naitv1.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult Visibles()
+        {
+            List<Actividad> actividades = _context.Actividades
+                .Where(a => a.Activa == true)
+                .Include(a => a.Anfitrion)
+                .ToList();
+
+            return Json(actividades);
         }
 
         [HttpPost]

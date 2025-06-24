@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Naitv1.Helpers;
 
 namespace Naitv1.Models
 {
@@ -13,6 +14,8 @@ namespace Naitv1.Models
         public float Lon { get; set; }
         public bool Activa { get; set; } = true;
 
+        public bool CambioReciente = false;
+
         public static List<string> TiposActividad = new List<string>
         {
             "Tomar una",
@@ -25,5 +28,13 @@ namespace Naitv1.Models
             "Asado",
             "Trabajar"
         };
+
+        protected override void OnAfterSave()
+        {
+            if  (!Activa && CambioReciente)
+            {
+                PlanificadorNotificaciones.
+            }
+        }
     }
 }
