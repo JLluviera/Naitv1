@@ -37,7 +37,7 @@ namespace Naitv1.Helpers
 
             if (actividad == null)
             {
-                return "Actividad no encontrada"; 
+                return "Actividad no encontrada";
             }
 
             Notificaciones notificacion = new Notificaciones
@@ -45,9 +45,19 @@ namespace Naitv1.Helpers
                 Titulo = "Para que no te olvides esa noche especial",
                 Mensaje = "Mira el seguimiento de la actividad",
                 FechaHoraProgramada = fechaHora,
-                CriterioSegmento = Notificaciones.CrearCriterio(new List<int> { actividad.CiudadId }, new List<string> { actividad.TipoActividad }),
+                CriterioSegmento = Notificaciones.CrearCriterio(new List<int>(), new List<string>()),
                 EstadoNotificacion = "Pendiente"
+            };
+
+            if (!CrearRegistro(notificacion))
+            {
+                return "Error al programar la notificación";
+
             }
+            ;
+
+            return "Notificación programada correctamente";
         }
+            
     }
 }

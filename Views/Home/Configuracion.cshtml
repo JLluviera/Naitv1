@@ -2,7 +2,7 @@
     ViewData["Title"] = "Configuracion";
 }
 
-<a href="/Sesion/Salir">Salir</a>
+<a class="m-2 p-3" href="/Sesion/Salir">Salir</a>
 
 @if(ViewBag.esAnfitrion)
 {
@@ -14,3 +14,9 @@
         <a href="/Ciudades/InsercionManual">Insertar ciudades pre cargadas</a>
     </div>
 }
+@if(ViewBag.AnfitrionActividad){
+    <div>
+        <a  href="/Actividades/FinalizarActividad">AAAAA</a>
+    </div>
+}
+

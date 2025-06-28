@@ -31,9 +31,10 @@ namespace Naitv1.Controllers
         {
             if (UsuarioLogueado.esAnfitrion(HttpContext.Session) == false)
             {
-                ViewBag.Error = "Debes estar logeado como super admin para acceder a esta configuracion";
+                Console.WriteLine("Debes estar logeado como super admin para acceder a esta configuracion");
+                return RedirectToAction("Index", "Home");
             }
-            else { ViewBag.Error = null; }
+            
 
             List<Notificaciones> notificaciones = _context.Notificaciones.ToList();
 
@@ -44,9 +45,13 @@ namespace Naitv1.Controllers
 
         public IActionResult Crear(string? asunto, string? cuerpo)
         {
-            if (UsuarioLogueado.esAnfitrion(HttpContext.Session) == false)
+            Usuario? userContext = _context.Usuarios.Where(u => u.Id == UsuarioLogueado.Usuario(HttpContext.Session).Id)
+                                                .FirstOrDefault();
+
+
+            if (userContext.Anfitrion == false)
             {
-                ViewBag.Error = "No es superAdmin";
+                ViewBag.Error = "No es anfitrion";
             }
             else { ViewBag.Error = null; }
 

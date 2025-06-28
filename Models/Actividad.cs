@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Naitv1.Data;
 using Naitv1.Helpers;
 
 namespace Naitv1.Models
@@ -29,11 +31,12 @@ namespace Naitv1.Models
             "Trabajar"
         };
 
-        protected override void OnAfterSave()
+        public void OnAfterSave(AppDbContext context)
         {
             if  (!Activa && CambioReciente)
             {
-                PlanificadorNotificaciones.
+                PlanificadorNotificaciones planificado = PlanificadorNotificaciones.ObtenerInstancia(context);
+                planificado.CrearRegistroPostEvento(this.Id, DateTime.Now.AddHours(2));
             }
         }
     }

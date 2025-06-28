@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Naitv1.Data;
 
@@ -11,9 +12,11 @@ using Naitv1.Data;
 namespace Naitv1.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250625191611_deletebaehavior")]
+    partial class deletebaehavior
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +54,8 @@ namespace Naitv1.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnfitrionId");
+                    b.HasIndex("AnfitrionId")
+                        .IsUnique();
 
                     b.ToTable("Actividades");
                 });
@@ -179,8 +183,8 @@ namespace Naitv1.Migrations
             modelBuilder.Entity("Naitv1.Models.Actividad", b =>
                 {
                     b.HasOne("Naitv1.Models.Usuario", "Anfitrion")
-                        .WithMany("ActividadesDelUsuario")
-                        .HasForeignKey("AnfitrionId")
+                        .WithOne("Actividad")
+                        .HasForeignKey("Naitv1.Models.Actividad", "AnfitrionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -189,7 +193,8 @@ namespace Naitv1.Migrations
 
             modelBuilder.Entity("Naitv1.Models.Usuario", b =>
                 {
-                    b.Navigation("ActividadesDelUsuario");
+                    b.Navigation("Actividad")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

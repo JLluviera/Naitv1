@@ -36,6 +36,8 @@ namespace Naitv1.Controllers
                 ViewBag.actividades = actividades;
             }
 
+            Usuario user = UsuarioLogueado.Usuario(HttpContext.Session);
+
             return View();
         }
 
@@ -51,6 +53,11 @@ namespace Naitv1.Controllers
 
         public IActionResult Configuracion()
         {
+            Usuario user = UsuarioLogueado.Usuario(HttpContext.Session);
+            Usuario? userContext = _context.Usuarios
+                .Where(u => u.Id == user.Id)
+                .FirstOrDefault();
+
             if (UsuarioLogueado.estaLogueado(HttpContext.Session) == false)
             {
                 return RedirectToAction("Index", "Home");
@@ -62,6 +69,12 @@ namespace Naitv1.Controllers
             }
             else
             { ViewBag.esAnfitrion = false; }
+
+            if (userContext != null && userContext.Anfitrion)
+            {
+                ViewBag.AnfitrionActividad = true;
+            }
+            else { ViewBag.AnfitrionActividad = false; };
 
             return View();
         }
