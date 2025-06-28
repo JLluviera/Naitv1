@@ -68,6 +68,14 @@ namespace Naitv1.Controllers
         [HttpPost]
         public IActionResult Crear (string tituloNotificacion, string mensajeNotificacion, List<int> idsCiudades, List<string> roles, DateTime fechaProgramadaNotificacion) 
         {
+            if (HelperPlaceHolders.ValidarTemplate(mensajeNotificacion) == false)
+            {
+                ViewBag.Planilla.AsuntoTemplate = tituloNotificacion;
+                ViewBag.Planilla.CuerpoTemplate = mensajeNotificacion;
+                ViewBag.ErrorTemplate = "Error en la plantilla: número de llaves desbalanceado. Te falto cerrar algun PlaceHolder?";
+                return View("Notificaciones/Crear");
+            }
+
             string criteriosSegmentados = Notificaciones.CrearCriterio(idsCiudades, roles);
             
             Notificaciones notificacion = new Notificaciones();
@@ -78,12 +86,14 @@ namespace Naitv1.Controllers
             notificacion.FechaHoraProgramada = fechaProgramadaNotificacion;
             notificacion.EstadoNotificacion = "pendiente";
 
+            
+
 
             if(planificadorNotificaciones.CrearRegistro(notificacion) == false)
             {
                 ViewBag.Planilla.AsuntoTemplate = tituloNotificacion;
                 ViewBag.Planilla.CuerpoTemplate = mensajeNotificacion;
-                ViewBag.Error = "No se pudo crear la notificacion";
+                ViewBag.ErrorTemplate = "No se pudo crear la notificacion";
                 return View("Notifiaciones/Crear");
             };
 
